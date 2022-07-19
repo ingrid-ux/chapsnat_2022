@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
+import { doc, onSnapshot } from "firebase/firestore";
 import db from "../firebase";
 import firebase from "firebase/app";
 

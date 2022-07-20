@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }) {
 					// should we do something with that error??
 				});
 			}}>
-				<Text style={styles.loginText}>sign out</Text>
+				<Text style={styles.loginText}>Sign Out</Text>
 			</TouchableOpacity>
 
 			<Text>Hello, {user.email}! </Text>
@@ -38,7 +38,7 @@ export default function HomeScreen({ navigation }) {
 			</View>
 			)
 	} else if (user === null) { // if user is not logged in or have signed up, they cannot access chats 
-    // only sign up / login pages can be viewed 
+    // only sign up / login pages can be viewedz
 		return (
 		<View style={styles.container}>
 		<TouchableOpacity
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
 		height: 44,
 		backgroundColor: "yellow",
 		borderRadius: 25,
-		margin: 20
+		margin: 20,
 	},
 });

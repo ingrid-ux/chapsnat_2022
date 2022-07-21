@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Image, Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
+import {useFonts} from 'expo-font';
+import db from "../firebase";
+
 
 
 export default function HomeScreen({ navigation }) {
 
 	const [state, setState] = useState();
+	const [loaded] = useFonts({
+		Avenir: require('../fonts/AvenirNextLTPro-Bold.otf'),
+	  });
 
 	const auth = getAuth();
 	const user = auth.currentUser;
@@ -28,9 +34,12 @@ export default function HomeScreen({ navigation }) {
 				<Text style={styles.loginText}>Sign Out</Text>
 			</TouchableOpacity>
 
-			<Text>Hello, {user.email}! </Text>
+			<Text style={styles.helloText}>Hello, {user.email}! </Text>
+			<Image  
+            style={styles.tinyLogo}
+            source={require('../assets/winkyface.png')}/>
 
-			<TouchableOpacity
+			<TouchableOpacity style={{backgroundColor:"red",borderRadius:30,width:"60%", marginTop:30,}}
 				onPress={() => navigation.navigate("Chat")}
 			>
 				<Text style={styles.item}>Chat</Text>
@@ -58,6 +67,27 @@ export default function HomeScreen({ navigation }) {
 	
 }
 const styles = StyleSheet.create({
+
+	tinyLogo: {
+        //justifyContent: 'center',
+        alignItems: 'center',
+		marginTop: 20,
+        width: 200,
+        height: 200,
+        backgroundColor: '#fffc00',
+        resizeMode: 'contain', //prevents image from cutting from sides
+      },
+
+	helloText:{
+		fontFamily:"Avenir",
+		fontSize: 20,
+
+	},
+
+	loginText:{
+		fontFamily: "Avenir",
+
+	},
 	logoutBtn: {
 		width:"50%",
 		borderRadius:25,
@@ -67,17 +97,26 @@ const styles = StyleSheet.create({
 		justifyContent:"center",
 		backgroundColor:"grey",
 		color: "white"
+		
 	},
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
+		backgroundColor: "yellow",
+		alignItems: "center",
+		fontFamily: "Avenir",
+		
 	},
 	item: {
 		padding: 10,
-		fontSize: 18,
+		fontSize: 20,
 		height: 44,
-		backgroundColor: "yellow",
+		//backgroundColor: "yellow",
 		borderRadius: 25,
 		margin: 20,
+		fontFamily: "Avenir",
+		alignContent:"center",
+		justifyContent: "center",
+		alignSelf: "center", // centered text inside of button
+		color:"white",
 	},
 });

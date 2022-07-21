@@ -41,7 +41,7 @@ export default function LoginScreen({navigation}) {
 
 		<>
   
-      
+  	<Text style={styles.title}> ChapSnat</Text>
         <View style={styles.container}>
             <Image  
             style={styles.tinyLogo}
@@ -84,13 +84,19 @@ export default function LoginScreen({navigation}) {
 
 
 const styles = StyleSheet.create({
-	loginText:{
 
+	title:{
+		paddingTop:20,
 		fontFamily:'Avenir',
 		fontWeight: 'bold',
+		fontSize: 50,
+		textAlign: 'center',
+		backgroundColor: '#fffc00',
+	},
+	loginText:{
+		fontFamily:'Avenir',
 		fontSize: 15,
 		color: 'white',
-
 	},
     tinyLogo: {
         justifyContent: 'center',
@@ -102,8 +108,9 @@ const styles = StyleSheet.create({
       },
 
     container: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        //justifyContent: 'center', // forces components to start strictly in the center of the app
+        paddingTop: 60,
+		alignItems: 'center',
         backgroundColor: '#fffc00',
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,

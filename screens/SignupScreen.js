@@ -1,7 +1,10 @@
 import { Text, View,Image, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, signInWithCustomToken } from "firebase/auth";
-import {useState} from "react"
+import { setDoc, doc } from 'firebase/firestore';
+import {useId, useState} from "react"
 import {useFonts} from 'expo-font';
+import db from "../firebase";
+import UserStack from '../navigation/UserStack';
 
 
 export default function LoginScreen({navigation}) {
@@ -13,24 +16,50 @@ export default function LoginScreen({navigation}) {
 
 	const auth = getAuth(); // what exactly does this do/what this is and how come it doesn't pass a parameter like email or password
 
-	async function handleSubmit() { // what does this do?? async vs await
-        // async functions allow you to order your code until something allows you do something
-        // they allow you to control the order of your code otherwise js+react just compiles continously
-        // same concept as fetch calls - result of this creates a user- dont exit the function until we get results 
-		console.log("handle submit envoked!!")
+	// async function handleSubmit() { // what does this do?? async vs await
+    //     // async functions allow you to order your code until something allows you do something
+    //     // they allow you to control the order of your code otherwise js+react just compiles continously
+    //     // same concept as fetch calls - result of this creates a user- dont exit the function until we get results 
+	// 	console.log("handle submit envoked!!")
 
-		await createUserWithEmailAndPassword(auth, email, password) //passes info of user inside to authenticate if user exists
-		.then((userCredential) => {
+	// 	await createUserWithEmailAndPassword(auth, email, password) //passes info of user inside to authenticate if user exists
+	// 	.then((userCredential) => {
+	// 		const user = userCredential.user;
+	// 		auth.currentUser = user;
+	// 		//const uid = user.uid;
+
+	// 	})
+	// 	.catch((error) => { //if error comes, error messages will occur
+	// 		const errorCode = error.code;
+	// 		const errorMessage = error.message; // no error messages are provided, thus the color is faded
+    //         console.log(errorCode, "<---- error code");
+    //         console.log(errorMessage, "<--- error message"); // used to debug or fix things 
+	// 	});
+	// 	await setDoc(doc(db, "Users", user.uid),{
+	// 	    bio: user.bio,
+	// 		username: user.username,
+
+	// 	});
+	// 	console.log(bio);
+	
+	// }
+
+	async function handleSubmit() {
+		createUserWithEmailAndPassword(auth, email, password)
+		  .then((userCredential) => {
 			const user = userCredential.user;
 			auth.currentUser = user;
-		})
-		.catch((error) => { //if error comes, error messages will occur
-			const errorCode = error.code;
-			const errorMessage = error.message; // no error messages are provided, thus the color is faded
-            console.log(errorCode, "<---- error code");
-            console.log(errorMessage, "<--- error message"); // used to debug or fix things 
-		});
-	}
+			console.log("making a new user on firestroe");
+			setDoc(doc(db, "Users", user.uid), {
+			  // make sure to change these to match the fields on your firestore!
+			  username: user.email,
+			  bio: "hello",
+			});
+		  })
+		  .catch((error) => {
+			console.log("Error when signing up new user:".error);
+		  });
+	  }
 
 	return (
 		<>
@@ -66,7 +95,7 @@ export default function LoginScreen({navigation}) {
             <TouchableOpacity style={styles.redirectBtn} onPress={() => {
                     navigation.navigate("Login") 
                 }}>
-                <Text>Already have an account? Login here</Text>
+                <Text style={{color:"white", fontFamily:"Avenir"}}>Already have an account? Login here</Text>
             </TouchableOpacity>
 		</View>
 		</>
@@ -100,8 +129,9 @@ const styles = StyleSheet.create({
 		alignItems:"center",
 		justifyContent:"center",
 		marginTop:40,
-		backgroundColor:"grey",
+		backgroundColor:"#0eadff",
 		color: "white",
+		fontFamily: 'Avenir',
 	},
 	inputView: {
 		// backgroundColor: "#FFC0CB",
@@ -148,6 +178,7 @@ const styles = StyleSheet.create({
 		color: 'black',
 		fontWeight: 'bold',
 		fontSize: 30,
-		padding: 50
+		padding: 50,
+		marginBottom: -30,
 	}
 })
